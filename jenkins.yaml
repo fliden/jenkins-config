@@ -1,12 +1,16 @@
 jenkins:
   systemMessage: "Personal CI/CD: Managed by JCasC."
-  numExecutors: 2
+  # BEST PRACTICE: Set to 0 to prevent heavy jobs from crashing the controller.
+  # This forces all jobs to run in the Docker agents we configured.
+  numExecutors: 0
 
   securityRealm:
     local:
       allowsSignup: false
       users:
         - id: "admin"
+          # SECURITY NOTE: For a real server, consider using an environment variable
+          # like "${ADMIN_PASSWORD}" and setting it in docker-compose.yml
           password: "changeme"
 
   authorizationStrategy:
@@ -17,4 +21,6 @@ jenkins:
 
 unclassified:
   location:
-    url: "http://localhost:8080/"
+    # CHANGE THIS: Put your DigitalOcean Droplet IP here (e.g., http://168.x.x.x:8080/)
+    # This ensures links in emails and GitHub webhooks work correctly.
+    url: "http://YOUR_DROPLET_IP:8080/"
