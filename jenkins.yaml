@@ -1,0 +1,20 @@
+jenkins:
+  systemMessage: "Personal CI/CD: Managed by JCasC."
+  numExecutors: 2
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "changeme"
+
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+        - "Overall/Read:authenticated"
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"
