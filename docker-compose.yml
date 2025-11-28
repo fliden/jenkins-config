@@ -1,27 +1,43 @@
 version: '3.8'
 
 services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"   # HTTP (Required for ACME challenge/redirect)
+      - "443:443" # HTTPS
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - jenkins
+
   jenkins:
     build: .
     container_name: jenkins-personal
     restart: unless-stopped
-
-    ports:
-      - "8080:8080"   # Web UI
-      - "50000:50000" # Agent communication
-
+    # 🔒 SECURE: We removed "ports" so port 8080 is NOT exposed to the internet.
+    # We use "expose" to let Caddy talk to it internally.
+    expose:
+      - "8080"
+      - "50000"
     environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-
+      - JENKINS_URL=${JENKINS_URL}
     volumes:
       - jenkins_home:/var/jenkins_home
       - ./jenkins.yaml:/var/jenkins_home/jenkins.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
-
-    # Add Jenkins user to Docker group (adjust GID to match host)
     group_add:
-      - "999"  # Replace with your host's Docker GID (find with: getent group docker | cut -d: -f3)
+      - "999"
 
 volumes:
   jenkins_home:
+  caddy_data:
+  caddy_config:

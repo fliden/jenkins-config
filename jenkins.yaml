@@ -11,16 +11,14 @@ jenkins:
         - id: "admin"
           # SECURITY NOTE: For a real server, consider using an environment variable
           # like "${ADMIN_PASSWORD}" and setting it in docker-compose.yml
-          password: "changeme"
+          password: "${ADMIN_PASSWORD}"
 
   authorizationStrategy:
-    globalMatrix:
-      permissions:
-        - "Overall/Administer:admin"
-        - "Overall/Read:authenticated"
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
 
 unclassified:
   location:
     # CHANGE THIS: Put your DigitalOcean Droplet IP here (e.g., http://168.x.x.x:8080/)
     # This ensures links in emails and GitHub webhooks work correctly.
-    url: "http://YOUR_DROPLET_IP:8080/"
+    url: "${JENKINS_URL}"
