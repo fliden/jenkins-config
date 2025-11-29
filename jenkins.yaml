@@ -1,0 +1,25 @@
+jenkins:
+  systemMessage: "Personal CI/CD: Managed by JCasC."
+  # IMPORTANT: Set to 1 to prevent builds from hanging.
+  # WARNING: Always use Docker agents in your pipelines (agent { docker { ... } })
+  # to avoid running heavy builds directly on the controller.
+  numExecutors: 1
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          # SECURITY NOTE: For a real server, consider using an environment variable
+          # like "${ADMIN_PASSWORD}" and setting it in docker-compose.yml
+          password: "${ADMIN_PASSWORD}"
+
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    # Set via JENKINS_URL environment variable in .env file
+    # This ensures links in emails and GitHub webhooks work correctly.
+    url: "${JENKINS_URL}"

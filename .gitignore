@@ -1,0 +1,22 @@
+# ---------------------
+# 🔒 SECRETS (Critical)
+# ---------------------
+.env
+
+# ---------------------
+# 📂 Local Data Prevention
+# ---------------------
+# If you ever accidentally switch from "Named Volumes" to "Local Folders"
+# for debugging, these ignore rules stop you from uploading 50GB of 
+# Jenkins/Caddy data to GitHub.
+jenkins_home/
+caddy_data/
+caddy_config/
+
+# ---------------------
+# 🧹 OS & Editor Junk
+# ---------------------
+.DS_Store
+.vscode/
+.idea/
+*.swp
