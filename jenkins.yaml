@@ -1,8 +1,9 @@
 jenkins:
   systemMessage: "Personal CI/CD: Managed by JCasC."
-  # BEST PRACTICE: Set to 0 to prevent heavy jobs from crashing the controller.
-  # This forces all jobs to run in the Docker agents we configured.
-  numExecutors: 0
+  # IMPORTANT: Set to 1 to prevent builds from hanging.
+  # WARNING: Always use Docker agents in your pipelines (agent { docker { ... } })
+  # to avoid running heavy builds directly on the controller.
+  numExecutors: 1
 
   securityRealm:
     local:
@@ -19,6 +20,6 @@ jenkins:
 
 unclassified:
   location:
-    # CHANGE THIS: Put your DigitalOcean Droplet IP here (e.g., http://168.x.x.x:8080/)
+    # Set via JENKINS_URL environment variable in .env file
     # This ensures links in emails and GitHub webhooks work correctly.
     url: "${JENKINS_URL}"
